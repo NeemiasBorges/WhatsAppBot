@@ -2,6 +2,7 @@
 using Infra.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
+using System.Reflection.PortableExecutable;
 using System.Text.Json;
 
 namespace Infra.Repositorio
@@ -31,7 +32,7 @@ namespace Infra.Repositorio
         {
             try
             {
-                string jsonContent = File.ReadAllText("C:\\Users\\ifspn\\OneDrive\\Desktop\\WHATSAPP_MESSAGE_SENDER\\bot-message-whatsapp\\Infra\\appsettings.json");
+                string jsonContent = File.ReadAllText("C:\\Users\\ifspn\\OneDrive\\Desktop\\WHATSAPP_MESSAGE_SENDER\\WhatsAppBot\\Infra\\appsettings.json");
                 JsonDocument jsonDocument = JsonDocument.Parse(jsonContent);
                 JsonElement connectionStringsElement;
                 if (!jsonDocument.RootElement.TryGetProperty("ConnectionStrings", out connectionStringsElement))
@@ -62,20 +63,20 @@ namespace Infra.Repositorio
 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    string query = "SELECT * FROM \"Mensagem\" WHERE \"StatusEnvio\" = 'N' ORDER BY \"Id\" DESC";
+                    string query = "SELECT * FROM \"Mensagem\" WHERE \"StatusEnvio\" = 'P' ORDER BY \"Id\" DESC";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        connection.Open();
+                        await connection.OpenAsync();
                         SqlDataReader reader = await command.ExecuteReaderAsync();
 
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             MensagemDTO cliente = new();
                             Msgs.Add(cliente.ConvertToDTO(reader));
                         }
 
-                        reader.Close();
+                        await reader.CloseAsync();
                     }
                 }
 

@@ -15,17 +15,15 @@ namespace Infra.DTO
         public MensagemDTO ConvertToDTO(SqlDataReader reader)
         {
             int id              = reader.GetInt32(reader.GetOrdinal("Id"));
-            string mensagem     = reader.GetString(reader.GetOrdinal("Mensagem"));
+            string mensagem     = reader.GetString(reader.GetOrdinal("MensagemTexto"));
             string nDestino     = reader.GetString(reader.GetOrdinal("Destinatario"));
             string sStatusEnvio = reader.GetString(reader.GetOrdinal("StatusEnvio"));
-            string dDataEnvio   = reader.GetString(reader.GetOrdinal("DataEnvio"));
 
             MensagemDTO mensagemDTO = new MensagemDTO()
             {
                 Id = id,
                 Mensagens = mensagem,
                 Destinatario = nDestino,
-                DataEnvio = dDataEnvio,
                 StatusEnvio = sStatusEnvio
             };
 

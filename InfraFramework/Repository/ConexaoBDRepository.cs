@@ -10,14 +10,37 @@ namespace InfraFramework.Repository
     public class ConexaoBDRepository : IConexaoBDRepository
     {
         internal string _stringCon = "";
-        public ConexaoBDRepository()
-        {
 
-        }
+        public ConexaoBDRepository(){ }
 
         public async Task Add(MensagemDTO entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<MensagemDTO> Msgs = new List<MensagemDTO>();
+                using (SqlConnection connection = new SqlConnection(_stringCon))
+                {
+                    string query = "SELECT * FROM \"Mensagem\" WHERE \"StatusEnvio\" = 'P' ORDER BY \"Id\" DESC";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        await connection.OpenAsync();
+                        SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                        while (await reader.ReadAsync())
+                        {
+                            MensagemDTO mensagem = new MensagemDTO();
+                            Msgs.Add(mensagem.ConvertToDTO(reader));
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public async Task<IEnumerable<MensagemDTO>> List()
@@ -36,15 +59,15 @@ namespace InfraFramework.Repository
 
                         while (await reader.ReadAsync())
                         {
-                            MensagemDTO mensagem = new();
+                            MensagemDTO mensagem = new MensagemDTO();
                             Msgs.Add(mensagem.ConvertToDTO(reader));
                         }
 
-                        await reader.CloseAsync();
+                        reader.Close();
                     }
                 }
 
-                return Msgs;
+                return Msgs.ToArray();
             }
             catch (Exception e)
             {

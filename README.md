@@ -1,5 +1,8 @@
 # WhatsAppBot
 
+
+Observar o link para conexao teste: https://www.youtube.com/watch?v=_jB2iOgo_9Q
+
 This repository contains the code for a WhatsApp Bot built using C#. The project is structured into several components, including Root, DTO, Interfaces, Repository, and the `infra.csproj` file.
 
 ## Table of Contents

@@ -1,16 +1,28 @@
-﻿
+﻿using Microsoft.Extensions.Configuration;
+using System;
+
 namespace InfraFramework
 {
-    public class InitializeDbContext
+    static class InitializeDbContext
     {
-        public InitializeDbContext()
+        private IConfiguration _config;
+
+        public InitializeDbContext(IConfiguration conf)
         {
-            IConfigurationBuilder builder = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
-            IConfigurationRoot configuration = builder.Build();
-
-            string value = configuration["MyKey"];
+            _config = conf;
+            setInitializeDbContext();
         }
+        public static void setInitializeDbContext()
+        {
+            try
+            {
+                var teste = _config["ConfigurationString"].ToString();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public static string ConectionString { get; set; }
     }
 }

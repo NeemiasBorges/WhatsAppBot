@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using InfraFramework.DTO;
 using InfraFramework.Repository.Interfaces;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using InfraFramework.Infra;
 
 namespace InfraFramework.Repository
 {
@@ -11,14 +13,12 @@ namespace InfraFramework.Repository
     {
         internal string _stringCon = "";
 
-        public ConexaoBDRepository(){ }
-
         public async Task Add(MensagemDTO entity)
         {
             try
             {
                 List<MensagemDTO> Msgs = new List<MensagemDTO>();
-                using (SqlConnection connection = new SqlConnection(_stringCon))
+                using (SqlConnection connection = await DbInstance.setDatabaseIntance())
                 {
                     string query = "SELECT * FROM \"Mensagem\" WHERE \"StatusEnvio\" = 'P' ORDER BY \"Id\" DESC";
 

@@ -17,7 +17,11 @@ namespace WindowsFormsApplication1
         private void button1_Click(object sender, EventArgs e)
         {
             MensagemDTO mensagem = new MensagemDTO();
-            mensagem.Texto = "";
+
+            if (String.IsNullOrWhiteSpace(this.campoMensagem.Text))
+                throw new Exception("Campo de Mensagem em Branco");
+
+            mensagem.Texto = this.campoMensagem.Text.ToString();
             _conexao.Add(mensagem);
         }
     }

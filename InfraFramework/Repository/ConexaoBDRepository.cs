@@ -77,7 +77,18 @@ namespace InfraFramework.Repository
 
         public async Task Remove(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(_stringCon))
+            {
+                string query = "DELETE Mensagem WHERE Id = @id";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+
+                    connection.Open();
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
         }
 
         public async Task<MensagemDTO> Update(MensagemDTO entity)

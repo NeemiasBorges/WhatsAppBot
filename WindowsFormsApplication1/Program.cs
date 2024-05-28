@@ -1,6 +1,5 @@
 ﻿using InfraFramework.Repository;
 using InfraFramework.Repository.Interfaces;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Windows.Forms;
 
@@ -16,7 +15,6 @@ namespace WindowsFormsApplication1
         [STAThread]
         static public void Main()
         {
-          
             IConexaoBDRepository repo = new ConexaoBDRepository();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
